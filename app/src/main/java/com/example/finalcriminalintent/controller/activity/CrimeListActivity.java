@@ -1,15 +1,19 @@
 package com.example.finalcriminalintent.controller.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.os.Bundle;
+import android.content.Context;
+import android.content.Intent;
 
-import com.example.finalcriminalintent.R;
 import com.example.finalcriminalintent.controller.fragment.CrimeListFragment;
 
 public class CrimeListActivity extends SingleFragmentActivity {
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, CrimeListActivity.class);
+        return intent;
+    }
+
 
     @Override
     public Fragment createFragment() {

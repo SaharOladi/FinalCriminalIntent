@@ -22,12 +22,15 @@ import com.example.finalcriminalintent.model.Crime;
 import com.example.finalcriminalintent.repository.CrimeRepository;
 import com.example.finalcriminalintent.repository.IRepository;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class CrimeDetailFragment extends Fragment {
 
     public static final String TAG = "CDF";
     public static final String ARGS_CRIME_ID = "crimeId";
+    public static final String FRAGMENT_TAG_DATE_PICKER = "DatePicker";
+    public static final int REQUEST_CODE_DATE_PICKER = 0;
 
     private EditText mEditTextTitle;
     private Button mButtonDate;
@@ -79,6 +82,7 @@ public class CrimeDetailFragment extends Fragment {
      * 1. Inflate the layout (or create layout in code)
      * 2. find all views
      * 3. logic for all views (like setListeners)
+     *
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -164,7 +168,7 @@ public class CrimeDetailFragment extends Fragment {
         mEditTextTitle.setText(mCrime.getTitle());
         mCheckBoxSolved.setChecked(mCrime.isSolved());
         mButtonDate.setText(mCrime.getDate().toString());
-        mButtonDate.setEnabled(false);
+//        mButtonDate.setEnabled(false);
     }
 
     private void setListeners() {
@@ -197,14 +201,27 @@ public class CrimeDetailFragment extends Fragment {
         mButtonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatePickerFragment datePickerFragment =
+                        DatePickerFragment.newInstance(mCrime.getDate());
 
+                //create parent-child relations between CDF and DPF
+                datePickerFragment.setTargetFragment(
+                        CrimeDetailFragment.this,
+                        REQUEST_CODE_DATE_PICKER);
+
+
+
+                datePickerFragment.show(
+                        getActivity().getSupportFragmentManager(),
+                        FRAGMENT_TAG_DATE_PICKER);
             }
         });
+
 
         mButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!checkNext()) {
+                if (!checkNext()) {
                     next();
                 }
                 initViews();
@@ -225,7 +242,7 @@ public class CrimeDetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 UUID btnId = mRepository.getCrimes().get(0).getId();
-                mCrime =  mRepository.getCrime(btnId);
+                mCrime = mRepository.getCrime(btnId);
                 initViews();
             }
         });
@@ -233,36 +250,36 @@ public class CrimeDetailFragment extends Fragment {
         mButtonLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UUID btnId = mRepository.getCrimes().get(mRepository.getCrimes().size()-1).getId();
-                mCrime =  mRepository.getCrime(btnId);
+                UUID btnId = mRepository.getCrimes().get(mRepository.getCrimes().size() - 1).getId();
+                mCrime = mRepository.getCrime(btnId);
                 initViews();
             }
         });
     }
 
 
-    private void next(){
-        for (int i = 0; i < mRepository.getCrimes().size() ; i++) {
-            if (mCrime.equals(mRepository.getCrimes().get(i))){
-                UUID btnId = mRepository.getCrimes().get(i+1).getId();
+    private void next() {
+        for (int i = 0; i < mRepository.getCrimes().size(); i++) {
+            if (mCrime.equals(mRepository.getCrimes().get(i))) {
+                UUID btnId = mRepository.getCrimes().get(i + 1).getId();
                 mCrime = mRepository.getCrime(btnId);
                 break;
             }
         }
     }
 
-    private void previous(){
-        for (int i = 0; i < mRepository.getCrimes().size() ; i++) {
-            if (mCrime.equals(mRepository.getCrimes().get(i))){
-                UUID btnId = mRepository.getCrimes().get(i-1).getId();
+    private void previous() {
+        for (int i = 0; i < mRepository.getCrimes().size(); i++) {
+            if (mCrime.equals(mRepository.getCrimes().get(i))) {
+                UUID btnId = mRepository.getCrimes().get(i - 1).getId();
                 mCrime = mRepository.getCrime(btnId);
                 break;
             }
         }
     }
 
-    private boolean checkNext(){
-        if (mCrime.equals(mRepository.getCrimes().get(mRepository.getCrimes().size()-1))){
+    private boolean checkNext() {
+        if (mCrime.equals(mRepository.getCrimes().get(mRepository.getCrimes().size() - 1))) {
             UUID btnId = mRepository.getCrimes().get(0).getId();
             mCrime = mRepository.getCrime(btnId);
             return true;
@@ -271,9 +288,9 @@ public class CrimeDetailFragment extends Fragment {
         return false;
     }
 
-    private boolean checkPrevious(){
-        if (mCrime.equals(mRepository.getCrimes().get(0))){
-            UUID btnId = mRepository.getCrimes().get(mRepository.getCrimes().size()-1).getId();
+    private boolean checkPrevious() {
+        if (mCrime.equals(mRepository.getCrimes().get(0))) {
+            UUID btnId = mRepository.getCrimes().get(mRepository.getCrimes().size() - 1).getId();
             mCrime = mRepository.getCrime(btnId);
             return true;
         }
@@ -283,5 +300,12 @@ public class CrimeDetailFragment extends Fragment {
 
     private void updateCrime() {
         mRepository.updateCrime(mCrime);
+    }
+
+    void updateCrimeDate(Date userSelectedDate) {
+        mCrime.setDate(userSelectedDate);
+        updateCrime();
+
+        mButtonDate.setText(mCrime.getDate().toString());
     }
 }
