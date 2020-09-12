@@ -90,7 +90,6 @@ public class CrimeListFragment extends Fragment {
             mRecyclerView.setAdapter(mCrimeAdapter);
         } else {
             // ask
-
             mCrimeAdapter.notifyDataSetChanged();
         }
     }

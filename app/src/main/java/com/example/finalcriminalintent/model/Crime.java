@@ -1,5 +1,7 @@
 package com.example.finalcriminalintent.model;
 
+import com.example.finalcriminalintent.utils.DateUtils;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -26,6 +28,26 @@ public class Crime {
         return mDate;
     }
 
+    public Crime() {
+        mId = UUID.randomUUID();
+        mDate = DateUtils.randomDate();
+    }
+
+
+//    public String getWithoutTime(){
+//        String str = mDate.toString();
+//        String[] output = str.split(" ");
+//        String finalStr = output[0] + " " + output[1] + " " + output[2] + " " + output[5];
+//        return finalStr;
+//    }
+
+//    public String getTime(){
+//        String str = mDate.toString();
+//        String[] output = str.split(" ");
+//        String finalStr = output[3] + " " + output[4];
+//        return finalStr;
+//    }
+
     public void setDate(Date date) {
         mDate = date;
     }
@@ -38,8 +60,5 @@ public class Crime {
         mSolved = solved;
     }
 
-    public Crime() {
-        mId = UUID.randomUUID();
-        mDate = new Date();
-    }
+
 }
