@@ -11,5 +11,6 @@ public interface IRepository {
     void insertCrime(Crime crime);
     void updateCrime(Crime crime);
     void deleteCrime(Crime crime);
+    void removeAllCrime();
     int getPosition(UUID crimeId);
 }

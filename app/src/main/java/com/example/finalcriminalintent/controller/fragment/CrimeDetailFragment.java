@@ -11,6 +11,9 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,6 +28,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.finalcriminalintent.R;
+import com.example.finalcriminalintent.controller.activity.CrimeListActivity;
+import com.example.finalcriminalintent.controller.activity.CrimePagerActivity;
 import com.example.finalcriminalintent.model.Crime;
 import com.example.finalcriminalintent.repository.CrimeRepository;
 import com.example.finalcriminalintent.repository.IRepository;
@@ -33,6 +38,7 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static java.util.Calendar.getInstance;
@@ -83,6 +89,7 @@ public class CrimeDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         Log.d(TAG, "onCreate");
 
@@ -135,7 +142,7 @@ public class CrimeDetailFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        updateCrime();
+//        updateCrime();
 
         Log.d(TAG, "onPause");
     }
@@ -261,20 +268,6 @@ public class CrimeDetailFragment extends Fragment {
                 timePickerFragment.setTargetFragment(CrimeDetailFragment.this,TIME_PICKER_REQUEST_CODE);
                 timePickerFragment.show(getFragmentManager(), TIMER_DIALOG_FRAGMENT_TAG);
 
-
-//                Calendar mCurrentTime = getInstance();
-//                int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
-//                int minute = mCurrentTime.get(Calendar.MINUTE);
-//                TimePickerDialog mTimePicker;
-//                mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-//                        mButtonTime.setText(selectedHour + ":" + selectedMinute);
-//                    }
-//                }, hour, minute, true);//Yes 24 hour time
-//                mTimePicker.setTitle("Select Time");
-//                mTimePicker.show();
-
             }
         });
 
@@ -363,18 +356,25 @@ public class CrimeDetailFragment extends Fragment {
         mRepository.updateCrime(mCrime);
     }
 
-    private void updateCrimeDate(Date userSelectedDate) {
-        mCrime.setDate(userSelectedDate);
-        updateCrime();
-
-//        mButtonDate.setText("Date: " + Forma);
-//        mButtonTime.setText("Time: " + mDate.getTime());
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_crime_detail_fragment, menu);
     }
 
-    private void updateCrimeTime(Time userSelectedDate){
-        updateCrime();
-        mButtonTime.setText(mCrime.getDate().toString());
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_crime_detail_delete_item:
+
+                mRepository.deleteCrime(mCrime);
+                Intent intent = CrimeListActivity.newIntent(getActivity());
+                startActivity(intent);
 
 
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+
 }
