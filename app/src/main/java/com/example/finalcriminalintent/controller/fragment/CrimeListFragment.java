@@ -24,12 +24,11 @@ import com.example.finalcriminalintent.R;
 import com.example.finalcriminalintent.controller.activity.CrimeListActivity;
 import com.example.finalcriminalintent.controller.activity.CrimePagerActivity;
 import com.example.finalcriminalintent.model.Crime;
-import com.example.finalcriminalintent.repository.CrimeRepository;
+import com.example.finalcriminalintent.repository.CrimeDBRepository;
 import com.example.finalcriminalintent.repository.IRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class CrimeListFragment extends Fragment {
 
@@ -65,7 +64,7 @@ public class CrimeListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRepository = CrimeRepository.getInstance();
+        mRepository = CrimeDBRepository.getInstance(getActivity());
         setHasOptionsMenu(true);
     }
 
@@ -108,6 +107,7 @@ public class CrimeListFragment extends Fragment {
             mRecyclerView.setAdapter(mCrimeAdapter);
         } else {
             // ask
+            mCrimeAdapter.setCrimes(crimes);
             mCrimeAdapter.notifyDataSetChanged();
         }
 
@@ -116,7 +116,7 @@ public class CrimeListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Crime crime = new Crime();
-                    CrimeRepository.getInstance().insertCrime(crime);
+                    CrimeDBRepository.getInstance(getActivity()).insertCrime(crime);
                     Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
                     startActivity(intent);
                 }
@@ -181,14 +181,25 @@ public class CrimeListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent;
 
         switch (item.getItemId()) {
+
+            case R.id.menu_item_add_crime:
+                Crime crime = new Crime();
+                mRepository.insertCrime(crime);
+
+                intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+                startActivity(intent);
+
+                return true;
+
             case R.id.menu_remove_all_crime_list_fragment:
                 for (int i = 0; i < selectedCrime.size(); i++) {
                     mRepository.deleteCrime(selectedCrime.get(i));
                 }
 
-                Intent intent = CrimeListActivity.newIntent(getActivity());
+                intent = CrimeListActivity.newIntent(getActivity());
                 startActivity(intent);
                 return true;
 

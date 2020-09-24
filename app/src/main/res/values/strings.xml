@@ -9,5 +9,11 @@
     <string name="crime_solved_label">Solved</string>
 
     <string name="date_picker_title">Date of crime:</string>
+    <string name="menu_add_crime">Add Crime</string>
+
+    <string name="text_login">login</string>
+    <string name="button_login">Log in</string>
+    <string name="text_sign_up">Sign up</string>
+    <string name="button_sign_up">Sign up</string>
 
 </resources>

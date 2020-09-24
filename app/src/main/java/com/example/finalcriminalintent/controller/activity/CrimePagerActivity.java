@@ -16,7 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.finalcriminalintent.R;
 import com.example.finalcriminalintent.controller.fragment.CrimeDetailFragment;
 import com.example.finalcriminalintent.model.Crime;
-import com.example.finalcriminalintent.repository.CrimeRepository;
+import com.example.finalcriminalintent.repository.CrimeDBRepository;
 import com.example.finalcriminalintent.repository.IRepository;
 import com.example.finalcriminalintent.ZoomOutPageTransformer;
 
@@ -47,7 +47,7 @@ public class CrimePagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime_pager);
 
-        mRepository = CrimeRepository.getInstance();
+        mRepository = CrimeDBRepository.getInstance(this);
         mCrimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
 
         findViews();

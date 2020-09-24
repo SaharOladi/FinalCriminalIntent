@@ -29,19 +29,14 @@ import androidx.fragment.app.Fragment;
 
 import com.example.finalcriminalintent.R;
 import com.example.finalcriminalintent.controller.activity.CrimeListActivity;
-import com.example.finalcriminalintent.controller.activity.CrimePagerActivity;
 import com.example.finalcriminalintent.model.Crime;
-import com.example.finalcriminalintent.repository.CrimeRepository;
+import com.example.finalcriminalintent.repository.CrimeDBRepository;
 import com.example.finalcriminalintent.repository.IRepository;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
-import static java.util.Calendar.getInstance;
 
 public class CrimeDetailFragment extends Fragment {
 
@@ -93,7 +88,7 @@ public class CrimeDetailFragment extends Fragment {
 
         Log.d(TAG, "onCreate");
 
-        mRepository = CrimeRepository.getInstance();
+        mRepository = CrimeDBRepository.getInstance(getActivity());
 
         //this is storage of this fragment
         UUID crimeId = (UUID) getArguments().getSerializable(ARGS_CRIME_ID);

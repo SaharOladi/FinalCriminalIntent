@@ -5,16 +5,12 @@ import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.finalcriminalintent.controller.fragment.CrimeListFragment;
 import com.example.finalcriminalintent.controller.fragment.LoginFragment;
 
-
-public class CrimeListActivity extends SingleFragmentActivity {
-
-    public static final String EXTRA_CRIME_REPOSITORY = "ExtraCrimeRepository";
+public class LoginActivity extends SingleFragmentActivity {
 
     public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, CrimeListActivity.class);
+        Intent intent = new Intent(context, LoginActivity.class);
 
         return intent;
     }
@@ -22,6 +18,6 @@ public class CrimeListActivity extends SingleFragmentActivity {
 
     @Override
     public Fragment createFragment() {
-        return new CrimeListFragment();
+        return new LoginFragment();
     }
 }
